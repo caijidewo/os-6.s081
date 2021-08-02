@@ -23,14 +23,9 @@ int main(int argc, char *argv[])
         para[argc - 1] = line;
         para[argc] = 0;
 
-        for(int i = 0; line[i] != 0; i++)
-        {
-            if(line[i] == '\n') {
-                line[i] = 0;
-                break;
-            }
-        }
-
+        if (line[strlen(line) - 1] == '\n')
+            line[strlen(line) - 1] = 0;
+            
         if (fork() == 0)
         {
             exec(para[0], para);
