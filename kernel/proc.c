@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "syscall.h"
 
 struct cpu cpus[NCPU];
 
@@ -294,6 +295,8 @@ fork(void)
   pid = np->pid;
 
   np->state = RUNNABLE;
+
+  np->mask = p->mask;
 
   release(&np->lock);
 
@@ -692,4 +695,17 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+int trace(int mask)
+{
+  //system call number: a7
+  //return value: a0
+  struct proc* p;
+  p = myproc();
+  p->mask = mask;
+  if((1 << p->trapframe->a7) & mask) {
+    return 0;
+  }
+  return 1; 
 }
