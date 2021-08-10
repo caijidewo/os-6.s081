@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "defs.h"
 #include "syscall.h"
+#include "sysinfo.h"
 
 struct cpu cpus[NCPU];
 
@@ -708,4 +709,28 @@ int trace(int mask)
     return 0;
   }
   return 1; 
+}
+
+int numofprocess()
+{
+  uint64 cnt = 0;
+  for(int i = 0; i < NPROC; i++)
+  {
+    if(proc[i].state != UNUSED)
+      cnt++;
+  }
+  return cnt;
+}
+
+int sysinfo(struct sysinfo *info)
+{
+
+  struct proc * p = myproc();
+  struct sysinfo kinfo;
+  kinfo.freemem = freedmemsize();
+  kinfo.nproc = numofprocess();
+  if(copyout(p->pagetable, (uint64)info, (char*) &kinfo, sizeof(kinfo)) < 0) {
+    return -1;
+  }
+  return 0;
 }
