@@ -708,7 +708,7 @@ int trace(int mask)
   if((1 << p->trapframe->a7) & mask) {
     return 0;
   }
-  return 1; 
+  return 1;
 }
 
 int numofprocess()
@@ -724,7 +724,6 @@ int numofprocess()
 
 int sysinfo(struct sysinfo *info)
 {
-
   struct proc * p = myproc();
   struct sysinfo kinfo;
   kinfo.freemem = freedmemsize();
