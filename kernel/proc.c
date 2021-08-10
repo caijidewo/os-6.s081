@@ -711,7 +711,7 @@ int trace(int mask)
   return 1;
 }
 
-int numofprocess()
+int numofprocess(void)
 {
   uint64 cnt = 0;
   for(int i = 0; i < NPROC; i++)
